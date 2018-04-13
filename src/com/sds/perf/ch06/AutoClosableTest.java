@@ -14,18 +14,16 @@ public class AutoClosableTest {
 
 	public static void printReverse(String fileName) throws IOException {
 		FileReader fr = new FileReader(fileName);
-		BufferedReader br = new BufferedReader(fr);
+		
 		List<String> m = new ArrayList<String>();
-		try {
+		try(BufferedReader br = new BufferedReader(fr)) {
 			String line = br.readLine();
 			while (line != null) {
 				m.add(line);
 				line = br.readLine();
 
 			}
-		} finally {
-			br.close();
-		}
+		} 
 		for (int i = m.size() - 1; i >= 0; i--) {
 			System.out.println(m.get(i));
 		}
