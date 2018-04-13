@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 class FileMgmtThread extends Thread {
+	private static final String SYNC = "SYNC";
 	private String manageType = "";
 
 	public FileMgmtThread(String type) {
@@ -13,24 +14,26 @@ class FileMgmtThread extends Thread {
 	}
 
 	public void run() {
-		try {
-			if (manageType.equals("READ")) {
-				File f = new File("Test_367.txt");
-				if (f.exists()) {
-					BufferedReader br = new BufferedReader(new FileReader(f));
-					br.close();
+		synchronized (SYNC) {	
+			try {
+				if (manageType.equals("READ")) {
+					File f = new File("Test_367.txt");
+					if (f.exists()) {
+						BufferedReader br = new BufferedReader(new FileReader(f));
+						br.close();
+					}
+				} else if (manageType.equals("DELETE")) {
+					File f = new File("Test_367.txt");
+					if (f.exists()) {
+						f.delete();
+					} else { 
+						// ...
+					}
 				}
-			} else if (manageType.equals("DELETE")) {
-				File f = new File("Test_367.txt");
-				if (f.exists()) {
-					f.delete();
-				} else { 
-					// ...
-				}
+			} catch (	IOException e) { 
+				// ...
+	
 			}
-		} catch (	IOException e) { 
-			// ...
-
 		}
 	}
 }
